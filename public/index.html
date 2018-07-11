@@ -57,7 +57,7 @@ input[type=textbox], select {
 <body>
 
 	<div class="chat">
-		<div id="chatbox" placeholder="">
+		<div id="chatbox">
 			</div>
 		<div class="username"><input id="username" type="textbox"></input>
 		<div class="chattype"><input id="textbox" type="textbox"></input>
@@ -84,9 +84,8 @@ input[type=textbox], select {
 		
 		socket.addEventListener('message', function (event) {
 			var received = JSON.parse(event.data);
-			var newHtml = '<p>' + received.message + '</p>';		
-			
-			document.getElementById("chatbox").innerHTML = document.getElementById("chatbox").innerHTML + newHtml;
+			var newHtml = '<p><strong style="color:' + received.color + '">' + received.username + '</strong>: ' + received.message + '</p>';		
+			document.getElementById("chatbox").innerHTML = newHtml + document.getElementById("chatbox").innerHTML;
 		});
 	
 		function sendMessage() {
@@ -94,6 +93,8 @@ input[type=textbox], select {
 			var inputUsername = document.getElementById("username");
 			socket.send(JSON.stringify({username:inputUsername.value,message:input.value}));
 			console.log(JSON.stringify({username:inputUsername.value,message:input.value}));
+			username.readOnly = true;
+			input.value = '';
 		};
 
 	</script>
